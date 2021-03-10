@@ -1,0 +1,51 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #FFF;
+
+  height: 100%;
+}
+
+button {
+  float: left;
+}
+
+
+.inputusername{
+  width: 100%;
+}
+
+.inputmessage {
+
+  width: 84%;
+  margin-right: 3px;
+  float: left;
+}
+
+.messages{
+
+  height: 68vh !important;
+  overflow:auto; 
+
+}
+
+
+.msgcorrenteuser {
+  float: right;
+  background-color: #f2f2f2;
+  padding: 3px;
+  width: 70%;
+  margin-bottom: 3px;
+}
+
+
+.msguser {
+  float: left;
+  padding: 3px;
+  width: 70%;
+  margin-bottom: 3px;
+}
+
+

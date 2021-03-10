@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"
+        integrity="sha512-YybopSVjZU0fe8TY4YDuQbP5bhwpGBE/T6eBUEZ0usM72IWBfWrgVI13qfX4V2A/W7Hdqnm7PIOYOwP9YHnICw=="
+        crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+         
+        <div class="row" style="margin-top: 0px; background-color: #6c757d;">
+          <div class="col-md-12">
+             <h1 class="mt-2" style="color: #FFF; text-align: center;"><i class="fas fa-comment"></i> CHAT</h1>
+          </div>
+        </div>
+
+
+        <div class="row" style="background-color: #FFF;">
+            <div class="col-md-12" style="margin-top: 5px;" onkeypress="handle();">
+
+                <form id="chat">
+                    <div class="mb-3">
+                        <input type="text" name="username" class="form-control inputusername"  placeholder="Digite seu usuário">
+                    </div>
+                 
+                        <div class="messages mb-3"></div>
+                
+                    <div class="mb-1">
+                        <input name="message" class="form-control inputmessage" placeholder="Digite sua mensagem">
+                        <button type="submit" class="btn btn-secondary" id="btnEnviar" onclick="execSub()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+         
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script type="text/javascript">
+
+
+$( document ).ready(function() {
+
+        // var socket = io('http://localhost:3000');
+        // var socket = io('http://10.0.0.24:3000');
+        var socket = io('https://f5b0aacab5ed.ngrok.io');
+
+
+        function renderMessage(message) {
+
+            if($('input[name=username]').val() == message.author){
+
+               $('.messages').append('<div class="message msgcorrenteuser"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
+
+            } else {
+            
+                $('.messages').append('<div class="message msguser"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
+
+            }
+
+
+        }
+
+        socket.on('receivedMessage', function (message) {
+            renderMessage(message);
+            execSub();
+        })
+
+
+        $('#chat').submit(function (event) {
+            event.preventDefault();
+
+            var author = $('input[name=username]').val();
+            var message = $('input[name=message]').val();
+
+            $('input[name=message]').val('');
+            $('input[name=message]').focus();
+  
+            if (author.length && message.length) {
+
+                var messageObject = {
+                    author: author,
+                    message: message
+                }
+
+                renderMessage(messageObject);
+
+               
+
+                socket.emit('sendMessage', messageObject);
+
+            }
+
+
+        });
+
+    });
+
+
+function execSub(){  
+    
+    
+   
+    
+  
+    $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 500);
+
+}
+
+
+function handle()
+    {
+      var keycode = window.event.keyCode;
+      if (keycode == 13)
+    {
+        $('#btnEnviar').click();
+    }
+  }
+
+    </script>
+
+</body>
+
+</html>
