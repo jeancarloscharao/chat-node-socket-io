@@ -1,5 +1,5 @@
 # chat-nodejs
-chat-p2p com nodejs
+chat-node-socket-io
 
 Dependências 
 
