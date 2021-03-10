@@ -1,5 +1,4 @@
-# chat-nodejs
-chat-node-socket-io
+# chat-node-socket-io
 
 Dependências 
 
